@@ -1,4 +1,8 @@
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.specification.RequestSpecification;
 import jdk.jfr.ContentType;
+import org.junit.jupiter.api.BeforeAll;
 
 import static io.restassured.RestAssured.*
 import static io.restassured.matcher.RestAssuredMatchers.*
@@ -16,7 +20,7 @@ public class UserGenerator {
  @BeforeAll
  static void setUpAll() {
   // сам запрос
-  given() // "дано"
+  given()
           .spec(requestSpec) // указываем, какую спецификацию используем
           .body(new RegistrationDto("vasya", "password", "active")) // передаём в теле объект, который будет преобразован в JSON
           .when() // "когда"

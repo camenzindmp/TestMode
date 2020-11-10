@@ -23,7 +23,7 @@ public class UserTest {
         // сам запрос
         given()
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(new UserGenerator.RegistrationDto("vasya", "password", "active")) // передаём в теле объект, который будет преобразован в JSON
+                .body(new UserGenerator.RegistrationDto()) // передаём в теле объект, который будет преобразован в JSON
                 .when() // "когда"
                 .post("/api/system/users") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"

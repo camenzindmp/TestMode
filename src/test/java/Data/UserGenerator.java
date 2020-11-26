@@ -40,7 +40,7 @@ public class UserGenerator {
         // сам запрос
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(new AuthInfo("vasya", "password", "active")) // передаём в теле объект, который будет преобразован в JSON
+                .body(new AuthInfo(getAuthInfo().login, getAuthInfo().password, getAuthInfo().status)) // передаём в теле объект, который будет преобразован в JSON
                 .when() // "когда"
                 .post("/api/system/users") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"

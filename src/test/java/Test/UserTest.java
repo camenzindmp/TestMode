@@ -2,7 +2,6 @@ package Test;
 
 import Data.UserGenerator;
 import com.codeborne.selenide.Condition;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selectors.byText;
@@ -41,15 +40,13 @@ public class UserTest {
         $(byText("Ошибка ")).shouldBe(Condition.visible);
         $(byText("Неверно указан логин или пароль")).shouldBe(Condition.visible);
     }
-//
 //    @Test
 //    void disabledUser() {
 //        UserGenerator.AuthInfo authInfo = UserGenerator.getAuthInfo();
 //        open("http://localhost:9999/api/system/users");
 //    }
-//
 //    @Test
-//    void userNotExists() {
+//    void userAlreadyExists() {
 //        UserGenerator.AuthInfo authInfo = UserGenerator.getAuthInfo();
 //        open("http://localhost:9999/api/system/users");
 //    }

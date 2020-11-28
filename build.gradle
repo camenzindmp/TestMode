@@ -19,7 +19,7 @@ repositories {
 dependencies {
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.5.1'
-    testImplementation 'com.codeborne:selenide:5.3.1'
+    testImplementation 'com.codeborne:selenide:5.16.0'
     testImplementation 'io.rest-assured:rest-assured:4.3.1'
     testImplementation 'com.google.code.gson:gson:2.8.6'
     testImplementation 'com.github.javafaker:javafaker:1.0.2'

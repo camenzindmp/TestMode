@@ -6,15 +6,17 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+
+import com.github.javafaker.Faker;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import com.github.javafaker.Faker;
 
 import java.util.Locale;
 
 import static io.restassured.RestAssured.*;
 
 public class UserGenerator {
+    private static Faker faker = new Faker(new Locale("en-GB"));
 
     private UserGenerator() {
     }
@@ -34,10 +36,10 @@ public class UserGenerator {
             .log(LogDetail.ALL)
             .build();
 
-    public static void createUser(AuthInfo authInfo) {
+    public static void registerUser(AuthInfo authInfo) {
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body() // передаём в теле объект, который будет преобразован в JSON
+                .body(authInfo) // передаём в теле объект, который будет преобразован в JSON
                 .when() // "когда"
                 .post("/api/system/users") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
@@ -52,16 +54,13 @@ public class UserGenerator {
         private String status;
     }
 
-    public static AuthInfo getCorrectAuthInfo() {
-        Faker faker = new Faker(new Locale("en-GB"));
-        return new AuthInfo(
-                faker.name().firstName().toLowerCase(),
-                generatePassword(),
-                "active"
-        );
+    public static AuthInfo getCorrectAuthInfo() { //OK!
+        AuthInfo user = new AuthInfo(faker.name().firstName().toLowerCase(), generatePassword(), "active");
+        registerUser(user);
+        return user;
     }
 
-    public static AuthInfo getInvalidLoginAuthInfo() {
+    public static AuthInfo getInvalidLoginAuthInfo() { //OK!
         return new AuthInfo(
                 "badLogin",
                 generatePassword(),
@@ -70,16 +69,12 @@ public class UserGenerator {
     }
 
     public static AuthInfo getInvalidPasswordAuthInfo() {
-        Faker faker = new Faker(new Locale("en-GB"));
-        return new AuthInfo(
-                faker.name().firstName().toLowerCase(),
-                "badPassword",
-                "active"
-        );
+        String login = faker.name().firstName().toLowerCase();
+        registerUser(new AuthInfo(login, generatePassword(), "active"));
+        return new AuthInfo(login, generatePassword(), "active");
     }
 
     public static AuthInfo getBlockedUserAuthInfo() {
-        Faker faker = new Faker(new Locale("en-GB"));
         return new AuthInfo(
                 faker.name().firstName().toLowerCase(),
                 generatePassword(),
@@ -88,13 +83,12 @@ public class UserGenerator {
     }
 
 //    public static AuthInfo getUnregisteredUserAuthInfo() {
-//        Faker faker = new Faker(new Locale("en-GB"));
 //        return new AuthInfo(
 //                faker.name().firstName().toLowerCase(),
 //                generatePassword(),
 //                "active"
 //        );
-    }
+}
 
 
 

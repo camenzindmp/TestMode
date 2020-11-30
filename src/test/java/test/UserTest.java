@@ -13,8 +13,6 @@ public class UserTest {
 
     @Test
     void successCase() {
-//        createUser(UserGenerator.getCorrectAuthInfo());
-        UserGenerator.createUser(UserGenerator.getCorrectAuthInfo());
         UserGenerator.AuthInfo authInfo = UserGenerator.getCorrectAuthInfo();
         open("http://localhost:9999");
         $("[class=input__control][name=login]").setValue(authInfo.getLogin());
@@ -25,19 +23,17 @@ public class UserTest {
 
     @Test
     void incorrectLogin() {
-//        createUser(UserGenerator.getCorrectAuthInfo());
         UserGenerator.AuthInfo authInfo = UserGenerator.getInvalidLoginAuthInfo();
         open("http://localhost:9999");
         $("[class=input__control][name=login]").setValue(authInfo.getLogin());
         $("[class=input__control][name=password]").setValue(authInfo.getPassword());
         $("[type=button]").click();
-        $(byText("Ошибка")).shouldBe(Condition.visible);
+//        $(byText("Ошибка")).shouldBe(Condition.visible);
         $("[data-test-id=error-notification]").shouldHave(text("Ошибка! Неверно указан логин или пароль"));
     }
 
     @Test
     void incorrectPassword() {
-//        createUser(UserGenerator.getCorrectAuthInfo());
         UserGenerator.AuthInfo authInfo = UserGenerator.getInvalidPasswordAuthInfo();
         open("http://localhost:9999");
         $("[class=input__control][name=login]").setValue(authInfo.getLogin());
@@ -49,7 +45,6 @@ public class UserTest {
 
     @Test
     void blockedUser() {
-//        createUser(UserGenerator.getBlockedUserAuthInfo());
         UserGenerator.AuthInfo authInfo = UserGenerator.getBlockedUserAuthInfo();
         open("http://localhost:9999");
         $("[class=input__control][name=login]").setValue(authInfo.getLogin());

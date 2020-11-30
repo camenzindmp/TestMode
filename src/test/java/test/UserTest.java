@@ -22,18 +22,18 @@ public class UserTest {
     }
 
     @Test
-    void incorrectLogin() {
+    void invalidLogin() {
         UserGenerator.AuthInfo authInfo = UserGenerator.getInvalidLoginAuthInfo();
         open("http://localhost:9999");
         $("[class=input__control][name=login]").setValue(authInfo.getLogin());
         $("[class=input__control][name=password]").setValue(authInfo.getPassword());
         $("[type=button]").click();
-//        $(byText("Ошибка")).shouldBe(Condition.visible);
+        $(byText("Ошибка")).shouldBe(Condition.visible);
         $("[data-test-id=error-notification]").shouldHave(text("Ошибка! Неверно указан логин или пароль"));
     }
 
     @Test
-    void incorrectPassword() {
+    void invalidPassword() {
         UserGenerator.AuthInfo authInfo = UserGenerator.getInvalidPasswordAuthInfo();
         open("http://localhost:9999");
         $("[class=input__control][name=login]").setValue(authInfo.getLogin());
@@ -54,14 +54,14 @@ public class UserTest {
         $("[data-test-id=error-notification]").shouldHave(text("Ошибка! Пользователь заблокирован"));
     }
 
-//    @Test
-//    void unregisteredUser() {
-//        UserGenerator.AuthInfo authInfo = UserGenerator.getUnregisteredUserAuthInfo();
-//        open("http://localhost:9999");
-//        $("[class=input__control][name=login]").setValue(authInfo.getLogin());
-//        $("[class=input__control][name=password]").setValue(authInfo.getPassword());
-//        $("[type=button]").click();
-//        $(byText("Ошибка")).shouldBe(Condition.visible);
-//        $("[data-test-id=error-notification]").shouldHave(text("Ошибка! Неверно указан логин или пароль"));
-//    }
+    @Test
+        // Проверка на выполнение перезаписи данных пользователя(пароль) при повторной передаче пользователя в запросе с тем же логином:
+    void rewritedUser() {
+        UserGenerator.AuthInfo authInfo = UserGenerator.getRewritedUser();
+        open("http://localhost:9999");
+        $("[class=input__control][name=login]").setValue(authInfo.getLogin());
+        $("[class=input__control][name=password]").setValue(authInfo.getPassword());
+        $("[type=button]").click();
+        $("[class=App_appContainer__3jRx1]").shouldHave(text("Личный кабинет"));
+    }
 }

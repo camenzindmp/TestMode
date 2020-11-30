@@ -54,18 +54,17 @@ public class UserGenerator {
         private String status;
     }
 
-    public static AuthInfo getCorrectAuthInfo() { //OK!
+    public static AuthInfo getCorrectAuthInfo() {
         AuthInfo user = new AuthInfo(faker.name().firstName().toLowerCase(), generatePassword(), "active");
         registerUser(user);
         return user;
     }
 
-    public static AuthInfo getInvalidLoginAuthInfo() { //OK!
-        return new AuthInfo(
-                "badLogin",
-                generatePassword(),
-                "active"
-        );
+
+    public static AuthInfo getInvalidLoginAuthInfo() {
+//        String password = generatePassword();// Для теста на неправильный логин можно не генерить одинаковый пароль;
+        registerUser(new AuthInfo(faker.name().firstName().toLowerCase(), generatePassword(), "active"));
+        return new AuthInfo(faker.name().firstName().toLowerCase(), generatePassword(), "active");
     }
 
     public static AuthInfo getInvalidPasswordAuthInfo() {
@@ -75,19 +74,20 @@ public class UserGenerator {
     }
 
     public static AuthInfo getBlockedUserAuthInfo() {
-        return new AuthInfo(
-                faker.name().firstName().toLowerCase(),
-                generatePassword(),
-                "blocked"
-        );
+        AuthInfo user = new AuthInfo(faker.name().firstName().toLowerCase(), generatePassword(), "blocked");
+        registerUser(user);
+        return user;
     }
 
-//    public static AuthInfo getUnregisteredUserAuthInfo() {
-//        return new AuthInfo(
-//                faker.name().firstName().toLowerCase(),
-//                generatePassword(),
-//                "active"
-//        );
+    // Проверка на выполнение перезаписи данных пользователя(пароль) при повторной передаче пользователя в запросе с тем же логином:
+    public static AuthInfo getRewritedUser() {
+        String login = faker.name().firstName().toLowerCase();
+        AuthInfo firstUserInfo = new AuthInfo(login, generatePassword(), "active");
+        AuthInfo secondUserInfo = new AuthInfo(login, generatePassword(), "active");
+        registerUser(firstUserInfo);
+        registerUser(secondUserInfo);
+        return secondUserInfo;
+    }
 }
 
 
